@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 /**
  * Iterator on int[] return only even numbers.
  */
-public class EvenNumbersIterator implements Iterator{
+public class EvenNumbersIterator implements Iterator {
 
     private final int[] iterationArray;
     private int pos = 0;
@@ -37,7 +37,7 @@ public class EvenNumbersIterator implements Iterator{
      */
     private void setPosToNextEvenNumber() {
         while (pos < iterationArray.length && !(iterationArray[pos] % 2 == 0)) {
-            pos ++;
+            pos++;
         }
     }
 }
