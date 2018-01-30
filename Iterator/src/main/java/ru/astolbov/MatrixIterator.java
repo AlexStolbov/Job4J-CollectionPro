@@ -1,3 +1,5 @@
+package ru.astolbov;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -22,11 +24,9 @@ public class MatrixIterator implements Iterator {
 
     @Override
     public Object next() {
-
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-
         int result = iterationArray[posY][posX];
         if (posX < iterationArray[posY].length - 1) {
             posX++;

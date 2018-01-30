@@ -1,3 +1,5 @@
+package ru.astolbov;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -21,14 +23,11 @@ public class EvenNumbersIterator implements Iterator {
 
     @Override
     public Object next() {
-
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-
         int res = iterationArray[pos++];
         setPosToNextEvenNumber();
-
         return res;
     }
 
