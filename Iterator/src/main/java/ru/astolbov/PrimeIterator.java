@@ -20,11 +20,11 @@ public class PrimeIterator implements Iterator {
      */
     public PrimeIterator(int[] inputNumbers) {
         this.inputNumbers = inputNumbers;
-        setPosToNextPrimeNumber();
     }
 
     @Override
     public boolean hasNext() {
+        setPosToNextPrimeNumber();
         return pos < inputNumbers.length;
     }
 
