@@ -13,11 +13,11 @@ public class EvenNumbersIterator implements Iterator {
 
     public EvenNumbersIterator(final int[] iterationArray) {
         this.iterationArray = iterationArray;
-        setPosToNextEvenNumber();
     }
 
     @Override
     public boolean hasNext() {
+        setPosToNextEvenNumber();
         return pos < iterationArray.length;
     }
 
