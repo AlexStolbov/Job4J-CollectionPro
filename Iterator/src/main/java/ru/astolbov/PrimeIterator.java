@@ -34,7 +34,6 @@ public class PrimeIterator implements Iterator {
             throw new NoSuchElementException();
         }
         int res = inputNumbers[pos++];
-        setPosToNextPrimeNumber();
         return res;
     }
 
