@@ -13,32 +13,32 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public void add(T model) {
-        if (posForAdd + 1 >= storage.length) {
-            extendStorage();
+        if (this.posForAdd + 1 >= this.storage.length) {
+            this.extendStorage();
         }
-        set(posForAdd++, model);
+        this.storage[this.posForAdd++] = model;
     }
 
     public void set(int index, T model) {
-        checkIndex(index);
-        storage[index] = model;
+        this.checkIndex(index);
+        this.storage[index] = model;
     }
 
     public void delete(int index) {
-        checkIndex(index);
-        Object[] oldStorage = storage;
-        storage = new Object[oldStorage.length - 1];
-        System.arraycopy(oldStorage, 0, storage, 0, index);
-        System.arraycopy(oldStorage, index + 1, storage, index, oldStorage.length - index - 1);
+        this.checkIndex(index);
+        Object[] oldStorage = this.storage;
+        this.storage = new Object[oldStorage.length - 1];
+        System.arraycopy(oldStorage, 0, this.storage, 0, index);
+        System.arraycopy(oldStorage, index + 1, this.storage, index, oldStorage.length - index - 1);
     }
 
     public T get(int index) {
-        checkIndex(index);
-        return (T) storage[index];
+        this.checkIndex(index);
+        return (T) this.storage[index];
     }
 
     public int size() {
-        return storage.length;
+        return this.storage.length;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SimpleArray<T> implements Iterable<T> {
      * @param index
      */
     private void checkIndex(int index) {
-        if (index >= storage.length) {
+        if (index >= this.storage.length) {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -60,9 +60,9 @@ public class SimpleArray<T> implements Iterable<T> {
      * Increases the size of the array by one.
      */
     private void extendStorage() {
-        Object[] oldStorage = storage;
-        storage = new Object[oldStorage.length + 1];
-        System.arraycopy(oldStorage, 0, storage, 0, oldStorage.length);
+        Object[] oldStorage = this.storage;
+        this.storage = new Object[oldStorage.length + 1];
+        System.arraycopy(oldStorage, 0, this.storage, 0, oldStorage.length);
     }
 
     private class IteratorSimpleArray implements Iterator<T> {
@@ -73,12 +73,12 @@ public class SimpleArray<T> implements Iterable<T> {
 
         @Override
         public boolean hasNext() {
-            return pos < storage.length;
+            return this.pos < storage.length;
         }
 
         @Override
         public T next() {
-            if (!hasNext()) {
+            if (!this.hasNext()) {
                 throw new NoSuchElementException();
             }
             return (T) storage[pos++];
