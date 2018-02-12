@@ -12,7 +12,7 @@ public class RoleStoreTest {
     public void whenAddElementThenCanFindIt() {
         Role role1 = new Role("role1");
         Role role2 = new Role("role2");
-        RoleStore<Role> roleStore = new RoleStore<>();
+        RoleStore roleStore = new RoleStore();
         roleStore.add(role1);
         roleStore.add(role2);
         assertThat(roleStore.findById(role1.getId()), is(role1));
@@ -28,7 +28,7 @@ public class RoleStoreTest {
     public void whenReplaceElementThenCanNotFindOldAndCanFindNew() {
         Role roleOld = new Role("old");
         Role roleNew = new Role("new");
-        RoleStore<Role> roleStore = new RoleStore<>();
+        RoleStore roleStore = new RoleStore();
         roleStore.add(roleOld);
         boolean res = roleStore.replace(roleOld.getId(), roleNew);
         assertThat(res, is(true));
@@ -38,7 +38,7 @@ public class RoleStoreTest {
 
     @Test
     public void whenReplaceNotExistingElementThenGetFalse() {
-        RoleStore<Role> roleStore = new RoleStore<>();
+        RoleStore roleStore = new RoleStore();
         boolean res = roleStore.replace("foo", new Role("any"));
         assertThat(res, is(false));
     }
@@ -46,7 +46,7 @@ public class RoleStoreTest {
     @Test
     public void whenDeleteElementThenCanNotFindIt() {
         Role role = new Role("one");
-        RoleStore<Role> roleStore = new RoleStore<>();
+        RoleStore roleStore = new RoleStore();
         roleStore.add(role);
         boolean res = roleStore.delete(role.getId());
         Role find = roleStore.findById(role.getId());
@@ -56,7 +56,7 @@ public class RoleStoreTest {
 
     @Test
     public void whenDeleteNotExistingElementThenGetFalse() {
-        RoleStore<Role> roleStore = new RoleStore<Role>();
+        RoleStore roleStore = new RoleStore();
         boolean res = roleStore.delete("foo");
         assertThat(res, is(false));
     }
