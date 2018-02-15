@@ -15,6 +15,7 @@ public class ArrayContainerTest {
         int topLevel = 403;
         for (int i = 0; i < topLevel; i++) {
             container.add(i);
+            assertThat(container.get(i), is(i));
         }
         assertThat(topLevel, is(container.getSize()));
     }
