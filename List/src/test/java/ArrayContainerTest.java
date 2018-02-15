@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class ArrayContainerTest {
 
     @Test
-    public void whenLotsOfElementThenContainerHaveSameSize() {
+    public void whenAddLotsOfElementThenContainerHaveSameSize() {
         ArrayContainer<Integer> container = new ArrayContainer<>();
         int topLevel = 403;
         for (int i = 0; i < topLevel; i++) {
