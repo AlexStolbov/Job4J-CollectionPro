@@ -4,10 +4,10 @@ import java.util.NoSuchElementException;
 
 public class LinkedListContainer<E> implements SimpleContainer<E>, Iterable<E> {
 
-    Node<E> first = null;
-    Node<E> last = null;
-    int modCount = 0;
-    int size = 0;
+    private Node<E> first = null;
+    private Node<E> last = null;
+    private int modCount = 0;
+    private int size = 0;
 
     @Override
     public void add(E value) {
@@ -24,13 +24,33 @@ public class LinkedListContainer<E> implements SimpleContainer<E>, Iterable<E> {
 
     @Override
     public E get(int index) {
+        return getNode(index).element;
+    }
+
+    public Node<E> getNode(int index) {
         checkIndex(index);
-        E res = null;
+        Node<E> res = null;
         int pos = 0;
         for (Node<E> current = this.first; pos <= index & current != null; current = current.next, pos++) {
-            res = current.element;
+            res = current;
         }
         return res;
+    }
+
+    public E delete(int index) {
+        Node<E> deletedNode = getNode(index);
+        if (deletedNode.prev != null) {
+            deletedNode.prev.next = deletedNode.next;
+        } else {
+            this.first = deletedNode.next;
+        }
+        if (deletedNode.next != null) {
+            deletedNode.next.prev = deletedNode.prev;
+        } else {
+            last = deletedNode.prev;
+        }
+        size--;
+        return deletedNode.element;
     }
 
     @Override
