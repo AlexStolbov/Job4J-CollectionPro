@@ -1,3 +1,5 @@
+package ru.astolbov;
+
 public interface SimpleContainer<E> extends Iterable<E> {
 
     void add(E value);

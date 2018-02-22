@@ -1,4 +1,7 @@
+package ru.astolbov;
+
 import org.junit.Test;
+import ru.astolbov.SimpleStack;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;

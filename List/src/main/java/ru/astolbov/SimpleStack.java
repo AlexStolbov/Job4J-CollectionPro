@@ -1,3 +1,5 @@
+package ru.astolbov;
+
 public class SimpleStack<T> {
     LinkedListContainer<T> elements = new LinkedListContainer<>();
     int lastIndex = -1;

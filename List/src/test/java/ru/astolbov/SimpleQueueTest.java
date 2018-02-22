@@ -1,4 +1,7 @@
+package ru.astolbov;
+
 import org.junit.Test;
+import ru.astolbov.SimpleQueue;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;

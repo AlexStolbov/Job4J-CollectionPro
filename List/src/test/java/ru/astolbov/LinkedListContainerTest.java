@@ -1,4 +1,7 @@
+package ru.astolbov;
+
 import org.junit.Test;
+import ru.astolbov.LinkedListContainer;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

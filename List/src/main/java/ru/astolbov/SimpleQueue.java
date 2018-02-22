@@ -1,3 +1,5 @@
+package ru.astolbov;
+
 public class SimpleQueue<T> {
     LinkedListContainer<T> elements = new LinkedListContainer<>();
 

@@ -1,3 +1,5 @@
+package ru.astolbov;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -53,7 +55,7 @@ public class LinkedListContainer<E> implements SimpleContainer<E>, Iterable<E> {
         return deletedNode.element;
     }
 
-    @Override
+     @Override
     public Iterator<E> iterator() {
         return new Iter();
     }
