@@ -9,15 +9,25 @@ public class DetectionOfCycle {
      * @param first first node
      * @return true if cycle exist
      */
-    static boolean hasCycle(NodeCycle first) {
-        HashSet<NodeCycle> passed = new HashSet<>();
+    public boolean hasCycle(NodeCycle first) {
         boolean res = false;
-        for (NodeCycle current = first; current != null; current = current.next) {
-            if (!passed.add(current)) {
-                res = true;
-                break;
-            }
+
+        if (first != null && first.next != null && first.next.next != null) {
+            NodeCycle fast = first.next.next;
+            NodeCycle slow = first;
+            do {
+                if (fast == slow) {
+                    res = true;
+                    break;
+                }
+                if (fast.next == null) {
+                    break;
+                }
+                fast = fast.next.next;
+                slow = slow.next;
+            } while (fast != null);
         }
+
         return res;
     }
 
