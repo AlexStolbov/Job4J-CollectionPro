@@ -33,6 +33,40 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         return (E) container[index];
     }
 
+    /**
+     * Returns true if this list contains the specified element.
+     *
+     * @param o element whose presence in this list is to be tested
+     * @return true if this list contains the specified element
+     */
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
+    /**
+     * Returns the index of the first occurrence of the specified element
+     * in this list, or -1 if this list does not contain the element.
+     */
+    public int indexOf(Object o) {
+        int res = -1;
+        if (o == null) {
+            for (int i = 0; i < size; i++) {
+                if (container[i] == null) {
+                    res = i;
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (o.equals(container[i])) {
+                  res = i;
+                  break;
+                }
+            }
+        }
+        return res;
+    }
+
     @Override
     public Iterator<E> iterator() {
         return new Iter();
