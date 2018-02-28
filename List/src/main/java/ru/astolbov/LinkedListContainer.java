@@ -55,9 +55,26 @@ public class LinkedListContainer<E> implements SimpleContainer<E>, Iterable<E> {
         return deletedNode.element;
     }
 
-     @Override
+    @Override
     public Iterator<E> iterator() {
         return new Iter();
+    }
+
+    /**
+     * Returns true if this list contains the specified element.
+     *
+     * @param value element whose presence in this list is to be tested
+     * @return true if this list contains the specified element
+     */
+    public boolean contains(Object value) {
+        boolean res = false;
+        for (Node<E> current = this.first; current != null; current = current.next) {
+            if (current.element.equals(value)) {
+                res = true;
+                break;
+            }
+        }
+        return res;
     }
 
     /**
