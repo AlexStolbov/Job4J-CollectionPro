@@ -27,6 +27,22 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         this.container[this.size++] = value;
     }
 
+    public void add(E value, int index) {
+        while (this.container.length - 1 < index) {
+            growContainer();
+        }
+        this.modCount++;
+        this.container[index] = value;
+        this.size++;
+    }
+
+    public void remove(int index) {
+        checkIndex(index);
+        this.modCount++;
+        this.container[index] = null;
+        this.size--;
+    }
+
     @Override
     public E get(int index) {
         checkIndex(index);
