@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class SimpleLinkedSet<E> implements Iterable<E> {
 
-    LinkedListContainer<E> container = new LinkedListContainer<>();
+    private LinkedListContainer<E> container = new LinkedListContainer<>();
 
     public void add(E value) {
         if (!container.contains(value)) {
