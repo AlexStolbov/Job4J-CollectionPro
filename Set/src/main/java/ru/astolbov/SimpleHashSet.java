@@ -2,34 +2,60 @@ package ru.astolbov;
 
 public class SimpleHashSet<E> {
 
-    private ArrayContainer<E> container = new ArrayContainer<>();
+    private Object[] container;
+    private float loadFactor;
+    private int countElements;
 
-    public void add(E e) {
+    public SimpleHashSet() {
+        this.container = new Object[20];
+        //т.к. коллизии не обрабатываем
+        this.loadFactor = 1;
+    }
+
+    public boolean add(E e) {
+        boolean res = false;
         if (!contains(e)) {
-            int hash = getHash(e);
-            this.container.add(e, hash);
+            if (countElements >= loadFactor * container.length) {
+                growSize();
+            }
+            int newHash = getHash(e);
+            this.container[newHash] = e;
+            countElements++;
+            res = true;
         }
+        return res;
     }
 
     public boolean contains(E e) {
-        return this.container.contains(e);
+        boolean res = false;
+        if (e.equals(this.container[getHash(e)])) {
+            res = true;
+        }
+        return res;
     }
 
     public void remove(E e) {
-        if (container.contains(e)) {
-            int hash = getHash(e);
-            if (e.equals(container.get(hash))) {
-                container.remove(hash);
-            }
+        if (contains(e)) {
+             this.container[getHash(e)] = null;
+             countElements--;
         }
     }
 
-    public int getSize() {
-        return container.getSize();
+    private int getHash(E e) {
+        int hash = (e.hashCode() & 0x7FFFFFFF) % container.length;
+        return hash;
     }
 
-    private int getHash(E e) {
-        return e.hashCode() - 1;
+    private void growSize() {
+        Object[] oldContainer = this.container;
+        int newSize = (int)(this.container.length * 1.5);
+        this.container = new Object[newSize];
+        for (int i = 0; i < oldContainer.length; i++) {
+            E current = (E) oldContainer[i];
+            if (current != null) {
+                this.container[getHash(current)] = current;
+            }
+        }
     }
 
 }
