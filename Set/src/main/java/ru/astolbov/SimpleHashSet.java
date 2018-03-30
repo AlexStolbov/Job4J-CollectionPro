@@ -27,11 +27,7 @@ public class SimpleHashSet<E> {
     }
 
     public boolean contains(E e) {
-        boolean res = false;
-        if (e.equals(this.container[getHash(e)])) {
-            res = true;
-        }
-        return res;
+        return e.equals(this.container[getHash(e)]);
     }
 
     public void remove(E e) {
@@ -48,7 +44,7 @@ public class SimpleHashSet<E> {
 
     private void growSize() {
         Object[] oldContainer = this.container;
-        int newSize = (int)(this.container.length * 1.5);
+        int newSize = (int) (this.container.length * 1.5);
         this.container = new Object[newSize];
         for (int i = 0; i < oldContainer.length; i++) {
             E current = (E) oldContainer[i];
