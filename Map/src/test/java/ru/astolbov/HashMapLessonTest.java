@@ -2,6 +2,8 @@ package ru.astolbov;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 public class HashMapLessonTest {
@@ -34,6 +36,23 @@ public class HashMapLessonTest {
         Integer one = new Integer(1);
         assertTrue(hash.insert(one, one.toString()));
         assertFalse(hash.insert(one, one.toString()));
+    }
+
+    @Test
+    public void iteratorTest() {
+        HashMapLesson<Integer, String> hml = new HashMapLesson<>();
+        hml.insert(1, "one");
+        hml.insert(2, "two");
+        hml.insert(3, "three");
+        for (String el : hml) {
+            assertNotNull(el);
+        }
+        Iterator it = hml.iterator();
+        it.next();
+        it.remove();
+        for (String el : hml) {
+            assertNotNull(el);
+        }
     }
 
 }

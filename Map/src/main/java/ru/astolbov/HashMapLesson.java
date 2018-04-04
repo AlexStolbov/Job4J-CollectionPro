@@ -1,6 +1,9 @@
 package ru.astolbov;
 
-public class HashMapLesson<K, V> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class HashMapLesson<K, V> implements Iterable<V>{
 
     private Node<K, V>[] table;
     int count;
@@ -67,6 +70,51 @@ public class HashMapLesson<K, V> {
         Node(K key, V value) {
             this.key = key;
             this.value = value;
+        }
+    }
+
+    @Override
+    public Iterator<V> iterator() {
+        return new IteratorLesson();
+    }
+
+    private class IteratorLesson implements Iterator {
+        boolean doNext;
+        int pos;
+        int lastPos;
+
+        public IteratorLesson() {
+            this.pos = 0;
+            this.lastPos = -1;
+        }
+
+        @Override
+        public boolean hasNext() {
+            while (pos < table.length && table[pos] == null) {
+                pos++;
+            }
+            return pos < table.length;
+        }
+
+        @Override
+        public Object next() {
+            if (hasNext()) {
+                doNext = true;
+                this.lastPos = this.pos;
+                return table[this.pos++].value;
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
+
+        @Override
+        public void remove() {
+            if (lastPos == -1) {
+                throw new IllegalStateException();
+            } else {
+                table[lastPos] = null;
+                lastPos = -1;
+            }
         }
     }
 
