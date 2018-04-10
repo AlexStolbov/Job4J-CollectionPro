@@ -42,6 +42,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return new TreeIterator<E>();
     }
 
+    public boolean isBinary() {
+        return isBinaryNode(root);
+    }
+
+    private boolean isBinaryNode(Node<E> node) {
+        boolean res = false;
+        if (node.leaves().size() < 3) {
+            res = true;
+            for (Node<E> current : node.leaves()) {
+                res = isBinaryNode(current);
+                if (!res) {
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
     private class TreeIterator<E extends Comparable<E>> implements Iterator<E> {
 
         //Список всех списков потомков
