@@ -13,8 +13,11 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     public boolean add(E parent, E child) {
         boolean res = false;
         if (!findBy(child).isPresent()) {
-            findBy(parent).get().add(new Node<>(child));
-            res = true;
+            Optional<Node<E>> exist = findBy(parent);
+            if (exist.isPresent()) {
+                exist.get().add(new Node<>(child));
+                res = true;
+            }
         }
         return res;
     }
