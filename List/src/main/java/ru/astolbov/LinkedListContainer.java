@@ -1,18 +1,26 @@
 package ru.astolbov;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@ThreadSafe
 public class LinkedListContainer<E> implements SimpleContainer<E>, Iterable<E> {
 
+    @GuardedBy("this")
     private Node<E> first = null;
+    @GuardedBy("this")
     private Node<E> last = null;
+    @GuardedBy("this")
     private int modCount = 0;
+    @GuardedBy("this")
     private int size = 0;
 
     @Override
-    public void add(E value) {
+    public synchronized void add(E value) {
         Node<E> newNode = new Node<>(value, this.last, null);
         if (this.last != null) {
             this.last.next = newNode;
@@ -39,7 +47,7 @@ public class LinkedListContainer<E> implements SimpleContainer<E>, Iterable<E> {
         return res;
     }
 
-    public E delete(int index) {
+    public synchronized E delete(int index) {
         Node<E> deletedNode = getNode(index);
         if (deletedNode.prev != null) {
             deletedNode.prev.next = deletedNode.next;
@@ -129,5 +137,4 @@ public class LinkedListContainer<E> implements SimpleContainer<E>, Iterable<E> {
             }
         }
     }
-
 }

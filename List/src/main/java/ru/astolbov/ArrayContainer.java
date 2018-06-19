@@ -1,12 +1,16 @@
 package ru.astolbov;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+@ThreadSafe
 public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
 
+    @GuardedBy("this")
     private Object[] container;
     private int size;
     private int modCount;
@@ -19,7 +23,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
     }
 
     @Override
-    public void add(E value) {
+    public synchronized void add(E value) {
         if (this.size == this.container.length) {
             growContainer();
         }
@@ -31,9 +35,11 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         while (this.container.length - 1 < index) {
             growContainer();
         }
-        this.modCount++;
-        this.container[index] = value;
-        this.size++;
+        synchronized (this) {
+            this.modCount++;
+            this.container[index] = value;
+            this.size++;
+        }
     }
 
     public void remove(int index) {
@@ -92,7 +98,8 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         return size;
     }
 
-    private void growContainer() {
+    private synchronized void growContainer() {
+    //private void growContainer() {
         this.container = Arrays.copyOf(this.container, this.container.length + DELTA_CHANGE_SIZE);
     }
 
