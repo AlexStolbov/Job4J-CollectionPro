@@ -12,7 +12,9 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
 
     @GuardedBy("this")
     private Object[] container;
+    @GuardedBy("this")
     private int size;
+    @GuardedBy("this")
     private int modCount;
     private static final int DELTA_CHANGE_SIZE = 100;
 
@@ -23,6 +25,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
     }
 
     @Override
+    @GuardedBy("this")
     public synchronized void add(E value) {
         if (this.size == this.container.length) {
             growContainer();
@@ -31,18 +34,18 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         this.container[this.size++] = value;
     }
 
-    public void add(E value, int index) {
+    @GuardedBy("this")
+    public synchronized void add(E value, int index) {
         while (this.container.length - 1 < index) {
             growContainer();
         }
-        synchronized (this) {
-            this.modCount++;
-            this.container[index] = value;
-            this.size++;
-        }
+        this.modCount++;
+        this.container[index] = value;
+        this.size++;
     }
 
-    public void remove(int index) {
+    @GuardedBy("this")
+    public synchronized void remove(int index) {
         checkIndex(index);
         this.modCount++;
         this.container[index] = null;
@@ -50,7 +53,8 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
     }
 
     @Override
-    public E get(int index) {
+    @GuardedBy("this")
+    public synchronized E get(int index) {
         checkIndex(index);
         return (E) container[index];
     }
@@ -61,7 +65,8 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
      * @param o element whose presence in this list is to be tested
      * @return true if this list contains the specified element
      */
-    public boolean contains(Object o) {
+    @GuardedBy("this")
+    public synchronized boolean contains(Object o) {
         return indexOf(o) >= 0;
     }
 
@@ -69,7 +74,8 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
      * Returns the index of the first occurrence of the specified element
      * in this list, or -1 if this list does not contain the element.
      */
-    public int indexOf(Object o) {
+    @GuardedBy("this")
+    public synchronized int indexOf(Object o) {
         int res = -1;
         if (o == null) {
             for (int i = 0; i < size; i++) {
@@ -94,12 +100,12 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         return new Iter();
     }
 
-    public int getSize() {
+    @GuardedBy("this")
+    public synchronized int getSize() {
         return size;
     }
 
-    private synchronized void growContainer() {
-    //private void growContainer() {
+    private void growContainer() {
         this.container = Arrays.copyOf(this.container, this.container.length + DELTA_CHANGE_SIZE);
     }
 
@@ -107,7 +113,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
      * Checks that the index is within the size of the array.
      * @param index
      */
-    private void checkIndex(int index) {
+    private synchronized void checkIndex(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
@@ -119,13 +125,15 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         int fixModCount = ArrayContainer.this.modCount;
 
         @Override
-        public boolean hasNext() {
+        @GuardedBy("this")
+        public synchronized boolean hasNext() {
+            checkModification();
             return cursor < ArrayContainer.this.size;
         }
 
         @Override
-        public E next() {
-            checkModification();
+        @GuardedBy("this")
+        public synchronized E next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
