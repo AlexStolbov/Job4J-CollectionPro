@@ -1,20 +1,16 @@
 package ru.astolbov;
 
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+//import net.jcip.annotations.GuardedBy;
+//import net.jcip.annotations.ThreadSafe;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-@ThreadSafe
-public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
+public class ArrayContainer<E> implements SimpleContainer<E> {
 
-    @GuardedBy("this")
     private Object[] container;
-    @GuardedBy("this")
     private int size;
-    @GuardedBy("this")
     private int modCount;
     private static final int DELTA_CHANGE_SIZE = 100;
 
@@ -25,8 +21,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
     }
 
     @Override
-    @GuardedBy("this")
-    public synchronized void add(E value) {
+    public void add(E value) {
         if (this.size == this.container.length) {
             growContainer();
         }
@@ -34,8 +29,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         this.container[this.size++] = value;
     }
 
-    @GuardedBy("this")
-    public synchronized void add(E value, int index) {
+    public void add(E value, int index) {
         while (this.container.length - 1 < index) {
             growContainer();
         }
@@ -44,8 +38,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         this.size++;
     }
 
-    @GuardedBy("this")
-    public synchronized void remove(int index) {
+    public void remove(int index) {
         checkIndex(index);
         this.modCount++;
         this.container[index] = null;
@@ -53,8 +46,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
     }
 
     @Override
-    @GuardedBy("this")
-    public synchronized E get(int index) {
+    public E get(int index) {
         checkIndex(index);
         return (E) container[index];
     }
@@ -65,7 +57,6 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
      * @param o element whose presence in this list is to be tested
      * @return true if this list contains the specified element
      */
-    @GuardedBy("this")
     public synchronized boolean contains(Object o) {
         return indexOf(o) >= 0;
     }
@@ -74,8 +65,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
      * Returns the index of the first occurrence of the specified element
      * in this list, or -1 if this list does not contain the element.
      */
-    @GuardedBy("this")
-    public synchronized int indexOf(Object o) {
+    public int indexOf(Object o) {
         int res = -1;
         if (o == null) {
             for (int i = 0; i < size; i++) {
@@ -100,8 +90,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         return new Iter();
     }
 
-    @GuardedBy("this")
-    public synchronized int getSize() {
+    public int getSize() {
         return size;
     }
 
@@ -113,7 +102,7 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
      * Checks that the index is within the size of the array.
      * @param index
      */
-    private synchronized void checkIndex(int index) {
+    private void checkIndex(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         }
@@ -125,15 +114,13 @@ public class ArrayContainer<E> implements SimpleContainer<E>, Iterable<E> {
         int fixModCount = ArrayContainer.this.modCount;
 
         @Override
-        @GuardedBy("this")
-        public synchronized boolean hasNext() {
+        public boolean hasNext() {
             checkModification();
             return cursor < ArrayContainer.this.size;
         }
 
         @Override
-        @GuardedBy("this")
-        public synchronized E next() {
+        public E next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
