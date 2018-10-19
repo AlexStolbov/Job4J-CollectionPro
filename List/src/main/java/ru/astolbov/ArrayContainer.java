@@ -1,7 +1,5 @@
 package ru.astolbov;
 
-//import net.jcip.annotations.GuardedBy;
-//import net.jcip.annotations.ThreadSafe;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
