@@ -18,6 +18,12 @@ public class ArrayContainer<E> implements SimpleContainer<E> {
         this.modCount = 0;
     }
 
+    public ArrayContainer(Object[] container, int size) {
+        this.container = container;
+        this.size = size;
+        this.modCount = 0;
+    }
+
     @Override
     public void add(E value) {
         if (this.size == this.container.length) {
@@ -90,6 +96,10 @@ public class ArrayContainer<E> implements SimpleContainer<E> {
 
     public int getSize() {
         return size;
+    }
+
+    public ArrayContainer<E> copy() {
+        return new ArrayContainer<>(this.container.clone(), this.size);
     }
 
     private void growContainer() {

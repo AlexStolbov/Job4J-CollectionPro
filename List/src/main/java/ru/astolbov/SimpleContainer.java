@@ -6,4 +6,5 @@ public interface SimpleContainer<E> extends Iterable<E> {
 
     E get(int index);
 
+    int getSize();
 }
