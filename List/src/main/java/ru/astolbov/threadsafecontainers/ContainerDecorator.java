@@ -10,7 +10,7 @@ import net.jcip.annotations.GuardedBy;
 public class ContainerDecorator<E> implements SimpleContainer<E> {
 
     @GuardedBy("this")
-    private SimpleContainer<E> container;
+    private final SimpleContainer<E> container;
 
     public ContainerDecorator(SimpleContainer<E> container) {
         this.container = container;
